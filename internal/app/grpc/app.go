@@ -5,7 +5,8 @@ import (
 	"log/slog"
 	"net"
 
-	authgrpc "github.com/HAtherlolz/grpc/internal/grpc/auth"
+	authgrpc "grpc-service-ref/internal/grpc/auth"
+
 	"google.golang.org/grpc"
 )
 
@@ -19,7 +20,7 @@ type App struct {
 func New(log *slog.Logger, port int) *App {
 	gRPCServer := grpc.NewServer()
 
-	authgrpc.Register()
+	authgrpc.Register(gRPCServer)
 
 	return &App{
 		log:        log,
@@ -37,17 +38,12 @@ func (a *App) MustRun() {
 func (a *App) Run() error {
 	const op = "grpcapp.Run"
 
-	log := a.log.With(
-		slog.String("op", op),
-		slog.Int("port", a.port),
-	)
-
-	l, err := net.Listen("tcp", fmt.Sprint("%d", a.port))
+	l, err := net.Listen("tcp", fmt.Sprintf(":%d", a.port))
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
-	log.Info("starting gRPC server", slog.String("addr", l.Addr().String()))
+	a.log.Info("grpc server started", slog.String("addr", l.Addr().String()))
 
 	if err := a.gRPCServer.Serve(l); err != nil {
 		return fmt.Errorf("%s: %w", op, err)

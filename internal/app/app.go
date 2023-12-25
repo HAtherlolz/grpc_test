@@ -4,11 +4,11 @@ import (
 	"log/slog"
 	"time"
 
-	grpcapp "github.com/HAtherlolz/grpc/internal/app/grpc"
+	grpcapp "grpc-service-ref/internal/app/grpc"
 )
 
 type App struct {
-	GRPCServer *grpcapp.Server
+	GRPCServer *grpcapp.App
 }
 
 func New(log *slog.Logger, gRPCPort int, storagePath string, tokenTTL time.Duration) *App {
