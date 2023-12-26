@@ -47,3 +47,6 @@ func main() {
 }
 
 // go run ./cmd/migrator --storage-path=./storage/sso.db --migration-path=./internal/migrations
+
+// TESTs
+// go run ./cmd/migrator --storage-path=./storage/sso.db --migration-path=./tests/migrations --migrations-table=migrations_test

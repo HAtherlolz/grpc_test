@@ -75,3 +75,5 @@ func setupPrettySlog() *slog.Logger {
 
 	return slog.New(handler)
 }
+
+// go run cmd/sso/main.go --config=./config/local.yaml

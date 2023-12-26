@@ -70,7 +70,6 @@ func (a *Auth) Login(
 	log.Info("attempting to login user")
 
 	user, err := a.userProvider.User(ctx, email)
-
 	if err != nil {
 		if errors.Is(err, storage.ErrorUserNotFound) {
 			a.log.Warn("user not found", sl.Err(err))
@@ -84,7 +83,7 @@ func (a *Auth) Login(
 	}
 
 	if err := bcrypt.CompareHashAndPassword(user.PassHash, []byte(password)); err != nil {
-		a.log.Error("invalid credentials", sl.Err(err))
+		a.log.Info("invalid credentials", sl.Err(err))
 
 		return "", fmt.Errorf("%s: %w", op, ErrorInvalidCredentials)
 	}
@@ -120,7 +119,6 @@ func (a *Auth) RegisterNewUser(
 	log.Info("registering user")
 
 	passHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-
 	if err != nil {
 		log.Error("failed to generate password hash", sl.Err(err))
 
